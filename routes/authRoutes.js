@@ -45,8 +45,10 @@ router.post('/login', async (req, res) => {
 
 
 // sign up route
-router.post('/register', async (req, res) => {
+router.post('/signup', async (req, res) => {
     const { email, password, firstName, lastName, role } = req.body;
+    console.log('Signing up user...')
+    
 
     if (!email || !password) {
         return res.status(400).json({ message: 'Email and password are required' });

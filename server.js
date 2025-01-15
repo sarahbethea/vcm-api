@@ -9,7 +9,7 @@ const dbPassword = process.env.DATABASE_PASSWORD;
 const dbCluster = process.env.DATABASE_CLUSTER_URL;
 const dbName = process.env.DATABASE_NAME;
 
-const authenticate = require('./middleware/authMiddleware')
+// const authenticate = require('./middleware/authMiddleware')
 
 const db = `mongodb+srv://${dbUser}:${dbPassword}@${dbCluster}/${dbName}?retryWrites=true&w=majority`;
 
@@ -21,12 +21,14 @@ mongoose.connect(db)
 const assignmentRoutes = require('./routes/assignmentRoutes');
 const userRoutes = require('./routes/userRoutes');
 const classRoutes = require('./routes/classRoutes');
+const authRoutes = require('./routes/authRoutes')
 
 //initialize Express app
 const app = express();
 
-//use cors for cross-origin resource sharing
+//use cors for cross-origin resource sharing and body parser
 app.use(cors());
+app.use(bodyParser.json());
 
 //test route
 app.get('/', (req, res) => {
@@ -35,10 +37,11 @@ app.get('/', (req, res) => {
 
 
 //apply public routes
+app.use('/api/auth', authRoutes)
 
 
 // Apply authentication middleware globally
-app.use(authenticate);
+// app.use(authenticate);
 
 // Private routes (require authentication)
 app.use('/api/users', userRoutes);
