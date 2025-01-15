@@ -2,13 +2,14 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const authenticate = require('../middleware/authMiddleware');
 require('dotenv').config();
 
 const dbUser = process.env.DATABASE_USER;
 const dbPassword = process.env.DATABASE_PASSWORD;
 const dbCluster = process.env.DATABASE_CLUSTER_URL;
 const dbName = process.env.DATABASE_NAME;
+
+const authenticate = require('./middleware/authMiddleware')
 
 const db = `mongodb+srv://${dbUser}:${dbPassword}@${dbCluster}/${dbName}?retryWrites=true&w=majority`;
 
@@ -40,8 +41,8 @@ app.get('/', (req, res) => {
 app.use(authenticate);
 
 // Private routes (require authentication)
-app.use('/api/users', users);
-app.use('/api/classes', classes);
+app.use('/api/users', userRoutes);
+app.use('/api/classes', classRoutes);
 
 
 
